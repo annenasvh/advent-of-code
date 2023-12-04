@@ -10,6 +10,7 @@ def main():
     print("The strategy would give you: " + str(sum(scores)) + " points")
     print("The actual strategy would give you: " + str(sum(scores2)) + " points")
 
+
 def calc_score(opponent, player):
     win = 6
     tie = 3

@@ -3,8 +3,9 @@ import re
 
 
 def main():
-    # print("Part 1: {}".format(part_one()))
+    print("Part 1: {}".format(part_one()))
     print("Part 2: {}".format(part_two()))
+    x = 1 + 2 + y
 
 
 def part_two():

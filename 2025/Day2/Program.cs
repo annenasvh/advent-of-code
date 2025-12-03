@@ -7,52 +7,52 @@ namespace Day2
     {
         static void Main(string[] args)
         {   
-            string FileName = "Input.txt";
+            string fileName = "Input.txt";
             // string FileName = "Example.txt";
 
-            string[] Input = File.ReadAllLines(FileName);
-            string[] Ranges = Input[0].Split(',');
+            string[] input = File.ReadAllLines(fileName);
+            string[] ranges = input[0].Split(',');
 
             // loop through ranges and sum up invalid IDs
-            long InvalidSum = 0;
-            for (int i = 0; i < Ranges.Length; i++)
+            long invalidSum = 0;
+            for (int i = 0; i < ranges.Length; i++)
             {
-                string[] Bounds = Ranges[i].Split('-');
-                InvalidSum += ProcessRange(Int64.Parse(Bounds[0]), Int64.Parse(Bounds[1]));
+                string[] bounds = ranges[i].Split('-');
+                invalidSum += ProcessRange(Int64.Parse(bounds[0]), Int64.Parse(bounds[1]));
             }
 
-            Console.WriteLine($"Sum of Invalid IDs: {InvalidSum}"); 
+            Console.WriteLine($"Sum of Invalid IDs: {invalidSum}"); 
         }
 
-        static long ProcessRange(long Lower, long Upper)
+        static long ProcessRange(long lower, long upper)
         {
-            long InvalidSum = 0;
-            for (long i = Lower; i <= Upper; i++)
+            long invalidSum = 0;
+            for (long i = lower; i <= upper; i++)
             {
                 // if (!IsValidID1(i))
                 if (!IsValidID2(i))
                 {
-                    InvalidSum += i;
+                    invalidSum += i;
                 }   
             }
 
-            return InvalidSum;
+            return invalidSum;
         }
 
         // Part 1
-        static bool IsValidID1(long ID)
+        static bool IsValidID1(long id)
         {
-            string StringID = ID.ToString();
+            string stringID = id.ToString();
 
-            if (StringID.Length % 2 != 0)
+            if (stringID.Length % 2 != 0)
             {
                 return true;
             }
 
-            long FirstHalf = Int64.Parse(StringID.Substring(0, StringID.Length / 2));
-            long SecondHalf = Int64.Parse(StringID.Substring(StringID.Length / 2));
+            long firstHalf = Int64.Parse(stringID.Substring(0, stringID.Length / 2));
+            long secondHalf = Int64.Parse(stringID.Substring(stringID.Length / 2));
 
-            if (FirstHalf == SecondHalf)
+            if (firstHalf == secondHalf)
             {
                 return false;
             }
@@ -61,21 +61,21 @@ namespace Day2
         }
 
         // Part 2
-        static bool IsValidID2(long ID)
+        static bool IsValidID2(long iD)
         {
-            string StringID = ID.ToString();
+            string stringID = iD.ToString();
 
             // Note: the first half of an odd number is the shorter half
             // e.g. 12345 becomes 12, so we only check the repetition of 1 and 12 in the rest of the string. 
             // We do not need to check 123 as the number is odd and thus cannot be made of a number repeated twice
-            string FirstHalf = StringID.Substring(0,StringID.Length / 2);
+            string firstHalf = stringID.Substring(0,stringID.Length / 2);
 
-            for (int len = 1; len <= FirstHalf.Length; len++)
+            for (int len = 1; len <= firstHalf.Length; len++)
             {
-                string RepetitionCandidate = FirstHalf.Substring(0, len);
+                string repetitionCandidate = firstHalf.Substring(0, len);
 
                 // repeating IDs are NOT valid
-                if (IsRepetition(RepetitionCandidate, StringID))
+                if (IsRepetition(repetitionCandidate, stringID))
                 {
                     return false;
                 }
@@ -87,21 +87,21 @@ namespace Day2
 
         // checks if ID is made up of Repeating repeated any number of times.
         // E.g. For Repeating = 12: ID = 121212 -> true, ID = 121213 -> false
-        static bool IsRepetition(string Repeating, string ID)
+        static bool IsRepetition(string repeating, string iD)
         {
             
-            long RepeatingLen = Repeating.Length;
+            long repeatingLen = repeating.Length;
 
             // if ID length is not a multiple of Repeating length, it cannot be a repetition
-            if (ID.Length % RepeatingLen != 0)
+            if (iD.Length % repeatingLen != 0)
             {
                 return false;
             }
             
             // check whether each substring of the right length equals Repeating
-            for (long i = 0; i <= ID.Length - RepeatingLen; i += RepeatingLen)
+            for (long i = 0; i <= iD.Length - repeatingLen; i += repeatingLen)
             {
-                if (ID.Substring((int)i, (int)(RepeatingLen)) != Repeating)
+                if (iD.Substring((int)i, (int)(repeatingLen)) != repeating)
                 {   
                     return false;
                 }

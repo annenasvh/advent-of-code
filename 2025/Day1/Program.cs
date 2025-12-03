@@ -7,85 +7,85 @@ namespace Day1
     {
         static void Main(string[] args)
         {
-            int DialLocation = 50;
+            int dialLocation = 50;
 
-            string FileName = "Input.txt";
-            // string FileName = "Example.txt";
+            string fileName = "Input.txt";
+            // string fileName = "Example.txt";
 
             // Read moves from inputfile
-            string[] Moves = File.ReadAllLines(FileName);
+            string[] moves = File.ReadAllLines(fileName);
 
             // Do all dial moves
-            int DoorPassword = 0;
-            for(int i=0; i < Moves.Length; i++)
+            int doorPassword = 0;
+            for(int i=0; i < moves.Length; i++)
             {
-                bool TurnDirectionRight = Moves[i][0] == 'R';
-                int TurnAmount = int.Parse(Moves[i].Substring(1));
+                bool turnDirectionRight = moves[i][0] == 'R';
+                int turnAmount = int.Parse(moves[i].Substring(1));
 
                 // Console.WriteLine($"Zeros counted: {DoorPassword}.\n ------------");
                 // Console.WriteLine($"Move: {Moves[i]}.");
-                // Console.WriteLine($"Dial Location: {DialLocation}.");
-                (DialLocation, int ExtraZeros) = TurnDial(DialLocation, TurnDirectionRight, TurnAmount);
+                // Console.WriteLine($"Dial Location: {dialLocation}.");
+                (dialLocation, int extraZeros) = TurnDial(dialLocation, turnDirectionRight, turnAmount);
 
 
                 // Track door password (number of times dial lands on 0 + number of times it passes 0)
-                DoorPassword += ExtraZeros;
-                if (DialLocation == 0) {
-                    DoorPassword += 1;
+                doorPassword += extraZeros;
+                if (dialLocation == 0) {
+                    doorPassword += 1;
                 }
             }
 
             // Output final dial location
-            Console.WriteLine($"Door password: {DoorPassword} (Dial Location: {DialLocation})");
+            Console.WriteLine($"Door password: {doorPassword} (Dial Location: {dialLocation})");
         }
 
-        static (int Location, int ZeroCount) TurnDial(int DialLocation, bool TurnRight, int TurnAmount)
+        static (int location, int zeroCount) TurnDial(int dialLocation, bool turnRight, int turnAmount)
         {
-            int NewDialLocation;
+            int newDialLocation;
 
-            int ZeroCounter = 0;
+            int zeroCounter = 0;
 
 
-            if (TurnRight)
+            if (turnRight)
             {
-                NewDialLocation = DialLocation + TurnAmount;
-                while (NewDialLocation > 99)
+                newDialLocation = dialLocation + turnAmount;
+                while (newDialLocation > 99)
                 {
                     // Prevent double counting if we land on zero exactly
-                    if (NewDialLocation == 100)
+                    if (newDialLocation == 100)
                     {
-                        ZeroCounter -= 1;
+                        zeroCounter -= 1;
                     }
                     // Console.WriteLine($"\tLocation computed: {NewDialLocation}");
-                    NewDialLocation -= 100;
-                    ZeroCounter += 1;                  
+                    newDialLocation -= 100;
+                    zeroCounter += 1;                  
                 }
             
             }
             else
             {
-                NewDialLocation = DialLocation - TurnAmount;
-                while (NewDialLocation < 0 )
+                newDialLocation = dialLocation - turnAmount;
+                while (newDialLocation < 0 )
                 {
                     // Console.WriteLine($"\tLocation computed: {NewDialLocation}");
-                    NewDialLocation += 100;
-                    ZeroCounter += 1;
+                    newDialLocation += 100;
+                    zeroCounter += 1;
                 }
 
                 // If we start at 0, we do not want to count that as passing zero (e.g. L5 from 0 moves to -5)
-                if (DialLocation == 0)
+                if (dialLocation == 0)
                 {
-                    ZeroCounter -= 1;
+                    zeroCounter -= 1;
                 }
 
                 // This should never happen
-                if (ZeroCounter < 0)
+                if (zeroCounter < 0)
                 {
                     Console.WriteLine("Error: Negative zero counter.");
                 }
             }
 
-            return (NewDialLocation, ZeroCounter);
+            return (newDialLocation, zeroCounter);
         }
     }
 }
